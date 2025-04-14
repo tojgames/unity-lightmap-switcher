@@ -1,0 +1,3 @@
+# My First UPM Package
+
+This is a simple Unity package ...

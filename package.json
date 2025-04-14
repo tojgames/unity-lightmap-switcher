@@ -1,0 +1,19 @@
+{
+  "name": "com.tojgames.lightmapswitcher",
+  "version": "1.0.1",
+  "displayName": "Lightmap Switcher",
+  "description": "A simple lightmapswitcher.",
+  "unity": "2022.3",
+  "author": {
+    "company" : "TOJGAMES",
+    "name": "TOJGAMES",
+    "email": "hello@tojgames.com"
+  },
+  "samples": [
+    {
+      "displayName": "Demo",
+      "description": "A sample scene and script to show Light Map Switcher in action.",
+      "path": "Samples~/Demo"
+    }
+  ]
+}
