@@ -1,3 +1,3 @@
-# My First UPM Package
+# Basic Baked Lightmap Switcher
 
-This is a simple Unity package ...
+Bake your scenes with different light settings and switch at any time.
