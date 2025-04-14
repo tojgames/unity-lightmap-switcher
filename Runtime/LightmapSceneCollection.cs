@@ -6,14 +6,15 @@ namespace TOJGAMES.LightmapSwitcher
     [CreateAssetMenu(fileName = "LightmapSceneCollection", menuName = "Lighting/Scene Lightmap Collection")]
     public class LightmapSceneCollection : ScriptableObject
     {
-        public Settings settings;
 
         public List<SavedLightmapData> savedLightmapsDatas = new List<SavedLightmapData>();
+        public Settings settings;
 
         [System.Serializable]
         public class Settings
         {
-            public string baseSaveFolder = "Saved Lightmaps";
+            [Tooltip("Where all the baked lightmaps will be stored")]
+            public string baseSaveFolder = "";
         }
     }
 }

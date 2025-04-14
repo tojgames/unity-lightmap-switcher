@@ -9,14 +9,46 @@ namespace TOJGAMES.LightmapSwitcher
     [CustomEditor(typeof(LightmapSceneCollection))]
     public class LightmapSceneCollectionEditor : Editor
     {
+
+        private LightmapSceneCollection lightmapSceneCollection;
+
         public override void OnInspectorGUI()
         {
-            DrawDefaultInspector();
-            EditorGUILayout.Space();
 
+            if ( !lightmapSceneCollection )
+                lightmapSceneCollection = (LightmapSceneCollection) target;
+
+            serializedObject.Update();
+
+            EditorGUILayout.BeginVertical();
+            
+            EditorGUILayout.PropertyField( serializedObject.FindProperty("savedLightmapsDatas"), new GUIContent("Saved Lightmaps Datas", ""), true );
+            
+            EditorGUILayout.EndVertical();
+
+            EditorGUILayout.Space();
+        
             if (GUILayout.Button("💾 Save Lightmaps from Scene to Folder"))
             {
                 SaveLightmapsToNewFolder();
+            }
+
+            EditorGUILayout.Space();
+            EditorGUILayout.PropertyField( serializedObject.FindProperty("settings"), new GUIContent("Settings", ""), true );
+
+            if ( string.IsNullOrEmpty(lightmapSceneCollection.settings.baseSaveFolder) )
+            {
+                EditorGUILayout.HelpBox(
+                    "Base Folder for saving files is not selected!", 
+                    MessageType.Error
+                );
+            }
+            
+
+            // Saving changes
+            serializedObject.ApplyModifiedProperties();
+            if ( GUI.changed ) {
+                EditorUtility.SetDirty(lightmapSceneCollection);
             }
         }
 
@@ -29,6 +61,12 @@ namespace TOJGAMES.LightmapSwitcher
             if (lightmaps == null || lightmaps.Length == 0)
             {
                 Debug.LogWarning("No baked lightmaps found.");
+                return;
+            }
+
+            if ( string.IsNullOrEmpty(lightmapSceneCollection.settings.baseSaveFolder) )
+            {
+                Debug.LogWarning("Base Folder for saving files is not selected!");
                 return;
             }
 
