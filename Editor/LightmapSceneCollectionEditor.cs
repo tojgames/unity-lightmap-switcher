@@ -9,23 +9,14 @@ namespace TOJGAMES.LightmapSwitcher
     [CustomEditor(typeof(LightmapSceneCollection))]
     public class LightmapSceneCollectionEditor : Editor
     {
-        private int versionIndex = 0;
-
         public override void OnInspectorGUI()
         {
             DrawDefaultInspector();
             EditorGUILayout.Space();
 
-            versionIndex = EditorGUILayout.IntField("Version Index (for Load)", versionIndex);
-
-            if (GUILayout.Button("💾 Save Lightmaps to Folder"))
+            if (GUILayout.Button("💾 Save Lightmaps from Scene to Folder"))
             {
                 SaveLightmapsToNewFolder();
-            }
-
-            if (GUILayout.Button("📥 Load Lightmap Version by Index"))
-            {
-                LoadLightmaps(versionIndex);
             }
         }
 
@@ -119,48 +110,6 @@ namespace TOJGAMES.LightmapSwitcher
             AssetDatabase.SaveAssets();
 
             Debug.Log($"✅ Lightmap version saved to: {fullFolderPath}");
-        }
-
-        private void LoadLightmaps(int index)
-        {
-            var collection = (LightmapSceneCollection)target;
-
-            if (index < 0 || index >= collection.savedLightmapsDatas.Count)
-            {
-                Debug.LogWarning($"Invalid version index: {index}");
-                return;
-            }
-
-            var data = collection.savedLightmapsDatas[index];
-            var lightmaps = new LightmapData[data.lightmaps.Count];
-
-            for (int i = 0; i < data.lightmaps.Count; i++)
-            {
-                lightmaps[i] = new LightmapData
-                {
-                    lightmapColor = data.lightmaps[i].lightmapColor,
-                    lightmapDir = data.lightmaps[i].lightmapDir
-                };
-            }
-
-            LightmapSettings.lightmapsMode = LightmapsMode.CombinedDirectional;
-            LightmapSettings.lightmaps = lightmaps;
-
-            foreach (var info in data.renderers)
-            {
-                GameObject obj = GameObject.Find(info.path);
-                if (obj == null) continue;
-
-                var renderer = obj.GetComponent<Renderer>();
-                if (renderer != null)
-                {
-                    renderer.lightmapIndex = info.lightmapIndex;
-                    renderer.lightmapScaleOffset = info.lightmapScaleOffset;
-                }
-            }
-
-            DynamicGI.UpdateEnvironment();
-            Debug.Log("✅ Lightmap version applied.");
         }
 
         private void CopyImportSettings(string sourcePath, string targetPath)
