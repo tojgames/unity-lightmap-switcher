@@ -14,38 +14,32 @@ namespace TOJGAMES.LightmapSwitcher
         {
             string sceneName = SceneManager.GetActiveScene().name;
 
-            if (sceneCollection == null || sceneCollection.sceneName != sceneName)
-            {
-                Debug.LogError($"❌ LightmapSceneCollection not assigned or doesn't match active scene: {sceneName}");
-                return;
-            }
-
-            if (sceneCollection.versions.Count == 0)
+            if (sceneCollection.savedLightmapsDatas.Count == 0)
             {
                 Debug.LogWarning($"⚠️ No lightmap versions available in collection for scene '{sceneName}'.");
                 return;
             }
 
-            ApplyLightmapData(sceneCollection.versions[^1]); // ^1 = last element
+            ApplyLightmapData(sceneCollection.savedLightmapsDatas[^1]); // ^1 = last element
         }
 
         public void ApplyLightmapByIndex(int index)
         {
             string sceneName = SceneManager.GetActiveScene().name;
 
-            if (sceneCollection == null || sceneCollection.sceneName != sceneName)
+            if (sceneCollection == null)
             {
                 Debug.LogError($"❌ LightmapSceneCollection not assigned or doesn't match active scene: {sceneName}");
                 return;
             }
 
-            if (index < 0 || index >= sceneCollection.versions.Count)
+            if (index < 0 || index >= sceneCollection.savedLightmapsDatas.Count)
             {
                 Debug.LogWarning($"⚠️ Invalid lightmap version index: {index} for scene '{sceneName}'.");
                 return;
             }
 
-            ApplyLightmapData(sceneCollection.versions[index]);
+            ApplyLightmapData(sceneCollection.savedLightmapsDatas[index]);
         }
 
         private void ApplyLightmapData(SavedLightmapData data)

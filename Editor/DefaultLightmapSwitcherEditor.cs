@@ -25,12 +25,7 @@ namespace TOJGAMES.LightmapSwitcher
 
             string activeScene = SceneManager.GetActiveScene().name;
 
-            if (collection.sceneName != activeScene)
-            {
-                EditorGUILayout.HelpBox($"⚠️ Scene mismatch!\nScene: {activeScene}\nCollection: {collection.sceneName}", MessageType.Warning);
-            }
-
-            int versionCount = collection.versions.Count;
+            int versionCount = collection.savedLightmapsDatas.Count;
             EditorGUILayout.LabelField("Scene:", activeScene);
             EditorGUILayout.LabelField("Saved Lightmap Versions:", versionCount.ToString());
 

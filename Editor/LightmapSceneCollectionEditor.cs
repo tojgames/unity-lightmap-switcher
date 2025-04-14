@@ -41,11 +41,8 @@ namespace TOJGAMES.LightmapSwitcher
                 return;
             }
 
-            if (string.IsNullOrEmpty(collection.sceneName))
-                collection.sceneName = sceneName;
-
             // Ensure base save folder exists
-            string baseFolder = $"Assets/{collection.baseSaveFolder}".TrimEnd('/');
+            string baseFolder = $"Assets/{collection.settings.baseSaveFolder}".TrimEnd('/');
             if (!AssetDatabase.IsValidFolder(baseFolder))
             {
                 string[] parts = baseFolder.Split('/');
@@ -117,7 +114,7 @@ namespace TOJGAMES.LightmapSwitcher
             AssetDatabase.SaveAssets();
             AssetDatabase.Refresh();
 
-            collection.versions.Add(savedData);
+            collection.savedLightmapsDatas.Add(savedData);
             EditorUtility.SetDirty(collection);
             AssetDatabase.SaveAssets();
 
@@ -128,13 +125,13 @@ namespace TOJGAMES.LightmapSwitcher
         {
             var collection = (LightmapSceneCollection)target;
 
-            if (index < 0 || index >= collection.versions.Count)
+            if (index < 0 || index >= collection.savedLightmapsDatas.Count)
             {
                 Debug.LogWarning($"Invalid version index: {index}");
                 return;
             }
 
-            var data = collection.versions[index];
+            var data = collection.savedLightmapsDatas[index];
             var lightmaps = new LightmapData[data.lightmaps.Count];
 
             for (int i = 0; i < data.lightmaps.Count; i++)
